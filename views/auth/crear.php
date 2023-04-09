@@ -3,7 +3,7 @@
 
     <div class="contenedor-sm">
         <p class="descripcion-pagina">Crea tu cuenta en UpTask</p>
-        <form action="/" method="POST" class="formulario">
+        <form action="/crear" method="POST" class="formulario">
             <div class="campo">
                 <label for="nombre">Nombre</label>
                 <input type="text" id="nombre" placeholder="Tu Nombre" name="nombre" />
@@ -20,7 +20,7 @@
                 <label for="passwordDos">Repetir Password</label>
                 <input type="password" id="passwordDos" placeholder="Repite tu Password" name="passwordDos" />
             </div>
-            <input type="submit" class="boton" value="Iniciar Sesión">
+            <input type="submit" class="boton" value="Crear Cuenta">
         </form>
         <div class="acciones">
             <a href="/">¿Ya tienes cuenta? Iniciar Sesión.</a>
