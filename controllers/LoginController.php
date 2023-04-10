@@ -57,7 +57,7 @@ class LoginController
 
                     $email->enviarConfirmacion();
 
-                    if($resultado){
+                    if ($resultado) {
                         header('Location: /mensaje');
                     }
                 }
@@ -74,11 +74,18 @@ class LoginController
 
     public static function olvide(Router $router)
     {
+        $alertas = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $usuario = new Usuario($_POST);
+            $alertas = $usuario->validarEmail();
+
+            if (empty($alertas)) {
+            }
         }
         //Mostrar la vista
         $router->render('auth/olvide', [
-            'titulo' => 'Olvide mi Password'
+            'titulo' => 'Olvide mi Password',
+            'alertas' => $alertas
         ]);
     }
 
@@ -102,15 +109,15 @@ class LoginController
     {
         $token = s($_GET['token']);
 
-        if(!$token) header('Location: /');
+        if (!$token) header('Location: /');
 
         //Encontrar al usuario 
         $usuario = Usuario::where('token', $token);
 
-        if(empty($usuario)){
+        if (empty($usuario)) {
             //No se encontro un usuario con ese token
             Usuario::setAlerta('error', 'Token no válido');
-        }else {
+        } else {
             //Confirmar la cuenta
             $usuario->confirmado = 1;
             $usuario->token = null;
@@ -119,8 +126,6 @@ class LoginController
             //Guardar en la BD
             $usuario->guardar();
             Usuario::setAlerta('exito', 'Cuenta comprobada correctamente');
-
-
         }
 
         $alertas = Usuario::getAlertas();

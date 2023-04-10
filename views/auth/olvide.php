@@ -1,9 +1,10 @@
 <div class="contenedor olvide">
     <?php include_once __DIR__ . '/../templates/nombre-sitio.php'; ?>
+    <?php include_once __DIR__ . '/../templates/alertas.php'; ?>
 
     <div class="contenedor-sm">
         <p class="descripcion-pagina">Recupera tu acceso UpTask</p>
-        <form action="/olvide" method="POST" class="formulario">
+        <form action="/olvide" method="POST" class="formulario" novalidate>
             <div class="campo">
                 <label for="email">E-mail</label>
                 <input type="email" id="email" placeholder="Tu E-mail" name="email" />
