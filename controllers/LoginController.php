@@ -55,9 +55,12 @@ class LoginController
             'titulo' => 'Reestablecer Password'
         ]);
     }
-    public static function mensaje()
+    public static function mensaje(Router $router)
     {
-        echo 'Desde mensaje';
+        //
+        $router->render('auth/mensaje',[
+            'titulo' => 'Cuenta Creada Exitosamente'
+        ]);
     }
 
     public static function confirmar()
