@@ -6,11 +6,11 @@
         <form action="/crear" method="POST" class="formulario">
             <div class="campo">
                 <label for="nombre">Nombre</label>
-                <input type="text" id="nombre" placeholder="Tu Nombre" name="nombre" />
+                <input type="text" id="nombre" placeholder="Tu Nombre" name="nombre" value="<?php echo $usuario->nombre; ?>" />
             </div>
             <div class="campo">
                 <label for="email">E-mail</label>
-                <input type="email" id="email" placeholder="Tu E-mail" name="email" />
+                <input type="email" id="email" placeholder="Tu E-mail" name="email" value="<?php echo $usuario->email; ?>" />
             </div>
             <div class="campo">
                 <label for="password">Password</label>
