@@ -2,6 +2,8 @@
 
 namespace Classes;
 
+use PHPMailer\PHPMailer\PHPMailer;
+
 class Email
 {
     protected $email;
@@ -13,5 +15,33 @@ class Email
         $this->email = $email;
         $this->nombre = $nombre;
         $this->token = $token;
+    }
+
+    public function enviarConfirmacion()
+    {
+        $mail = new PHPMailer();
+        $mail->isSMTP();
+        $mail->Host = 'sandbox.smtp.mailtrap.io';
+        $mail->SMTPAuth = true;
+        $mail->Port = 2525;
+        $mail->Username = 'a45f0b4e0b0155';
+        $mail->Password = '56c06e3daa0244';
+
+        $mail->setFrom('cuentas@uptask.com');
+        $mail->addAddress('cuentas@uptask.com', 'uptask.com');
+        $mail->Subject = 'Confirma tu cuenta';
+
+        $mail->isHTML(TRUE);
+        $mail->CharSet = 'UTF-8';
+
+        $contenido = '<html>';
+        $contenido .= "<p><strong>Hola " . $this->nombre . "</strong> Has creado tu cuenta en UpTask, solo debes confirmarla en el siguiente enlace</p>";
+        $contenido .= "<p>Presiona aquí: <a href='http://localhost:3000/confirmar?token=" . $this->token . "'>Confirmar Cuenta</a></p>";
+        $contenido .= '</html>';
+
+        $mail->Body = $contenido;
+
+        //Enviar el email
+        $mail->send();
     }
 }
