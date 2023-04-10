@@ -23,7 +23,7 @@ class Usuario extends ActiveRecord
         $this->password = $args['password'] ?? '';
         $this->passwordDos = $args['passwordDos'] ?? '';
         $this->token = $args['token'] ?? '';
-        $this->confirmado = $args['confirmado'] ?? '';
+        $this->confirmado = $args['confirmado'] ?? 0;
     }
 
     //Validación para nuevas cuentas
@@ -38,13 +38,12 @@ class Usuario extends ActiveRecord
         if (!$this->password) {
             self::$alertas['error'][] = 'El Password del Usuario es Obligatorio';
         }
-        if (strlen($this->password) > 6) {
+        if (strlen($this->password) < 6) {
             self::$alertas['error'][] = 'El password debe contener al menos 6 caracteres';
         }
         if ($this->password !== $this->passwordDos) {
             self::$alertas['error'][] = 'Los password son diferentes';
         }
-
         return self::$alertas;
     }
 }
