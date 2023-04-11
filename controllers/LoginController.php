@@ -116,25 +116,35 @@ class LoginController
         $token = s($_GET['token']);
         $mostrar = true;
 
-        if(!$token) header('Location: /');
+        if (!$token) header('Location: /');
 
         //Identificar el usuario con el token
         $usuario = Usuario::where('token', $token);
 
-        if(empty($usuario)){
-            Usuario::setAlerta('error','Token No Válido');
+        if (empty($usuario)) {
+            Usuario::setAlerta('error', 'Token No Válido');
             $mostrar = false;
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            //Añadir el nuevo password
+            $usuario->sincronizar($_POST);
+
+            //Validar el password
+            $alertas = $usuario->validarPassword();
+            
+            if(empty($alertas)){
+                //Hashear el nuevo password
+                
+            }
         }
         $alertas = Usuario::getAlertas();
 
         //Muestra la vista
         $router->render('auth/reestablecer', [
             'titulo' => 'Reestablecer Password',
-            'alertas'=>$alertas,
-            'mostrar'=>$mostrar
+            'alertas' => $alertas,
+            'mostrar' => $mostrar
         ]);
     }
     public static function mensaje(Router $router)
