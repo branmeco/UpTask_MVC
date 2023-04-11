@@ -10,18 +10,29 @@ class LoginController
 {
     public static function login(Router $router)
     {
+        $alertas = [];
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $auth = new Usuario($_POST);
+
+            $alertas = $auth->validarLogin();
+
+            if(empty($alertas)){
+                //verificar que el usuario exista
+
+                
+            }
         }
 
         //Render a la vista
         $router->render('auth/login', [
-            'titulo' => 'Iniciar Sesión'
+            'titulo' => 'Iniciar Sesión',
+            'alertas' => $alertas
         ]);
     }
 
     public static function logout()
     {
-        echo 'Desde longout';
     }
 
     public static function crear(Router $router)
@@ -132,10 +143,21 @@ class LoginController
 
             //Validar el password
             $alertas = $usuario->validarPassword();
-            
-            if(empty($alertas)){
+
+            if (empty($alertas)) {
                 //Hashear el nuevo password
-                
+                $usuario->hashPassword();
+
+                //Eliminar el token
+                $usuario->token = null;
+
+                //Guardar el usuario en la BD
+                $resultado = $usuario->guardar();
+
+                //Redireccionar
+                if ($resultado) {
+                    header('Location: /');
+                }
             }
         }
         $alertas = Usuario::getAlertas();
