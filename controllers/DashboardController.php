@@ -30,14 +30,14 @@ class DashboardController
             //Validación
             $alertas = $proyecto->validarProyecto();
 
-            if(empty($alertas)){
+            if (empty($alertas)) {
 
                 //Generar una URL única
                 $hash = md5(uniqid());
                 $proyecto->url = $hash;
 
                 //Alamacenar el creador del proyecto
-                $proyecto -> propietarioId = $_SESSION['id'];
+                $proyecto->propietarioId = $_SESSION['id'];
 
                 //Guardar el proyecto
                 $proyecto->guardar();
@@ -50,6 +50,27 @@ class DashboardController
         $router->render('dashboard/crear-proyecto', [
             'alertas' => $alertas,
             'titulo' => 'Crear Proyecto',
+        ]);
+    }
+
+    public static function proyecto(Router $router)
+    {
+        session_start();
+        isAuth();
+
+        $token = $_GET['id'];
+
+        if(!$token) header('Location: /dashboard');
+
+        //Revisar que la persona que visita el proyecto fue quien lo creo
+        $proyecto = Proyecto::where('url', $token);
+
+        if($proyecto->propietarioId !== $_SESSION['id']){
+            header('Location: /dashboard');
+        }
+
+        $router->render('dashboard/proyecto', [
+            'titulo' => $proyecto->proyecto
         ]);
     }
 
